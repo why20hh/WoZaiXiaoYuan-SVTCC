@@ -7,8 +7,9 @@
 # 如何配置微信提醒
 打开http://www.pushplus.plus/ 这个网页，使用微信扫码登录，然后点击一对一推送，里面有个token<br>复制token放到文件中的main.py -> pushtoken中就行了(记得关注公众号，不然收不到签到消息)
 
-# 如何运行这个程序
+# 程序依赖
 程序运行依赖requests库，你可以使用pip install requests 来安装它
+
 
 # 如何每天自动运行程序
 可以使用定时任务<br>
@@ -16,7 +17,10 @@
 Linux <a href='https://www.runoob.com/w3cnote/linux-crontab-tasks.html'>点击这里</a>
 Windows <a href='https://www.cnblogs.com/gcgc/p/11594467.html'>点击这里</a>
 
+
 <h2>推荐使用云函数来进行部署</h2><br>
+
+
 1.首先登录腾讯云控制台https://console.cloud.tencent.com/ 未实名认证的用户需要实名认证后才能使用<br>
 2.然后从左上角的云产品中找到云函数![image](https://i1.atlascloud.cn/2021/07/28/b21a90728054853.png)<br>
 3.然后点击函数服务，点击新建![image](https://i1.atlascloud.cn/2021/07/28/df4ba0728054935.png)<br>
