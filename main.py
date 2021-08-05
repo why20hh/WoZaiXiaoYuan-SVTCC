@@ -2,7 +2,6 @@
 import requests
 import json
 from urllib.parse import urlencode
-import time
 
 pushtoken = ''  # 这里填pushplus的token，可以在http://www.pushplus.plus/ 扫码注册
 user = {
@@ -10,26 +9,26 @@ user = {
     'password': ''  # 这里填密码
 }
 
+dk = {
+    'token': pushtoken,
+    'title': '我在校园每日打卡',
+    'content': '',
+}
+loginUrl = "https://gw.wozaixiaoyuan.com/basicinfo/mobile/login/username"
+header = {
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
+    "Content-Type": "application/json;charset=UTF-8",
+    "Content-Length": "2",
+    "Host": "gw.wozaixiaoyuan.com",
+    "Accept-Language": "en-us,en",
+    "Accept": "application/json, text/plain, */*"
+}
+dkurl = 'http://www.pushplus.plus/send'
+body = "{}"
+
 try:
-    loginUrl = "https://gw.wozaixiaoyuan.com/basicinfo/mobile/login/username"
-    header = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
-        "Content-Type": "application/json;charset=UTF-8",
-        "Content-Length": "2",
-        "Host": "gw.wozaixiaoyuan.com",
-        "Accept-Language": "en-us,en",
-        "Accept": "application/json, text/plain, */*"
-    }
-    user = {
-        'username': '19982423233',  # 这里填账号(手机号)
-        'password': '623223967'  # 这里填密码
-    }
-    # pushtoken = ''  # 这里填pushplus的token，可以在http://www.pushplus.plus/ 扫码注册
-
-    body = "{}"
-
 
     def setJwsession(jwsession):
         header['JWSESSION'] = jwsession
@@ -41,11 +40,9 @@ try:
         response = session.post(url=url, data=body, headers=header)
         res = json.loads(response.text)
         if res["code"] != 0:
-            print("登陆失败，请检查账号信息")
-            requests.get(
-                'http://www.pushplus.plus/send?token={}&title=我在校园签到&content=登陆失败,请检查账号信息&template=html'.format(
-                    pushtoken))
-            time.sleep(5)
+            dk['content'] = '登陆失败,请检查账号信息'
+            re = requests.post(url=dkurl, data=dk)
+            print(re.text)
         else:
             print("登陆成功")
             jwsession = response.headers['JWSESSION']
@@ -70,15 +67,18 @@ try:
             response = json.loads(response.text)
             print(response)
             if response["code"] == 0:
-                requests.get(
-                    'http://www.pushplus.plus/send?token={}&title=我在校园签到&content=打卡成功&template=html'.format(pushtoken))
+                dk['content'] = "打卡成功"
+                re = requests.post(url=dkurl, data=dk)
+                print(re.text)
             else:
-                requests.get(
-                    'http://www.pushplus.plus/send?token={}&title=我在校园签到&content=打卡失败&template=html'.format(pushtoken))
-
+                dk['content'] = "打卡失败"
+                re = requests.post(url=dkurl, data=dk)
+                print(re.text)
 
     if __name__ == '__main__':
         main(user['username'], user['password'])
 
 except:
-    requests.get('http://www.pushplus.plus/send?token={}&title=我在校园签到&content=打卡失败&template=html'.format(pushtoken))
+    dk['content'] = '运行出错,请检查'
+    re = requests.post(url=dkurl, data=dk)
+    print(re.text)
