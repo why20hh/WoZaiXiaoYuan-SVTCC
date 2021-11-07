@@ -15,20 +15,18 @@ header = {
     "Accept-Encoding": "gzip, deflate, br",
     "Connection": "keep-alive",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
-    "Content-Type": "application/json;charset=UTF-8",
+    "Content-Type": "application/x-www-form-urlencoded",
     "Content-Length": "2",
-    "Host": "gw.wozaixiaoyuan.com",
+    "Host": "student.wozaixiaoyuan.com",
     "Accept-Language": "en-us,en",
-    "Accept": "application/json, text/plain, */*"
+    "Accept": "application/json, text/plain, */*",
+    'JWSESSION':jwsession
 }
 dkurl = 'http://www.pushplus.plus/send'
 body = "{}"
 
 try:
     def main():
-        header['JWSESSION'] = jwsession
-        header['Host'] = "student.wozaixiaoyuan.com"
-        header['Content-Type'] = "application/x-www-form-urlencoded"
         url = "https://student.wozaixiaoyuan.com/health/save.json"
         sign_data = {
             "answers": '["0"]',
